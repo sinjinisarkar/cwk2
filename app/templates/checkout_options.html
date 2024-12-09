@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="text-center mb-4">
+        <h2 class="font-weight-bold">Checkout Options</h2>
+        <p class="text-muted">Choose how you want to proceed with your checkout.</p>
+    </div>
+
+    <div class="row">
+        <!-- Login Option -->
+        <div class="col-md-6">
+            <div class="card shadow-sm border-0">
+                <div class="card-body text-center">
+                    <i class="fas fa-user-circle fa-3x text-primary mb-3"></i>
+                    <h4 class="card-title">Returning Customer</h4>
+                    <p class="card-text text-muted">Log in to your account to proceed or sign up for faster checkout and order tracking.</p>
+                    <a href="#" class="btn btn-danger" data-toggle="modal" data-target="#userModal">Sign Up/Log In</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Guest Checkout Option -->
+        <div class="col-md-6">
+            <div class="card shadow-sm border-0">
+                <div class="card-body text-center">
+                    <i class="fas fa-user-alt-slash fa-3x text-secondary mb-3"></i>
+                    <h4 class="card-title">Guest Checkout</h4>
+                    <p class="card-text text-muted">Proceed without creating an account. You'll miss order tracking and faster checkout.</p>
+                    <a href="{{ url_for('guest_checkout') }}" class="btn btn-secondary">Guest Checkout</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

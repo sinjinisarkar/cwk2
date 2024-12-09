@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row">
+        <!-- Sidebar -->
+        <div class="col-md-3">
+            <div class="list-group shadow-sm">
+                <h5 class="mb-3">My Account</h5>
+                <a href="#" class="list-group-item list-group-item-action active">My Orders</a>
+                <a href="{{ url_for('wishlist') }}" class="list-group-item list-group-item-action">My Wishlist</a>
+                <a href="#" class="list-group-item list-group-item-action">Account Information</a>
+                <a href="{{ url_for('logout') }}" class="list-group-item list-group-item-action text-danger">Logout</a>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="col-md-9">
+            <h4>My Orders</h4>
+            {% if orders %}
+                <div class="order-summary">
+                    {% for order in orders %}
+                        <div class="card mb-4 shadow-sm">
+                            <div class="card-body">
+                                <!-- Order Details -->
+                                <h5 class="card-title">Order #{{ order.id }}</h5>
+                                <p class="text-muted">Ordered on {{ order.date_created.strftime('%d %B %Y') }}</p>
+
+                                <!-- Product Information -->
+                                <div class="row">
+                                    {% for item in order.order_items %}
+                                        <div class="col-md-4 mb-3">
+                                            <div class="card border-0">
+                                                <img src="{{ item.saree.image_url }}" class="product-image img-fluid rounded" alt="{{ item.saree.name }}">
+                                                <div class="card-body p-2">
+                                                    <h6 class="card-title mb-1">{{ item.saree.name }}</h6>
+                                                    <p class="text-muted mb-0">Quantity: {{ item.quantity }}</p>
+                                                    <p class="text-muted">Price: £{{ item.price }}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+
+                                <!-- Total Price -->
+                                <div class="text-right mt-3">
+                                    <h6 class="font-weight-bold">Order Total: £{{ order.total_price }}</h6>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="alert alert-warning" role="alert">
+                    You have no orders yet.
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

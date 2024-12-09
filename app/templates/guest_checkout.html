@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2>Guest Checkout</h2>
+    <form method="POST" action="{{ url_for('guest_checkout') }}">
+        <div class="form-group">
+            <label for="name">Name</label>
+            <input type="text" id="name" name="name" class="form-control" placeholder="Enter your name" required>
+        </div>
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" class="form-control" placeholder="Enter your email" required>
+        </div>
+        <div class="form-group">
+            <label for="address">Shipping Address</label>
+            <textarea id="address" name="address" class="form-control" placeholder="Enter your shipping address" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-danger">Proceed to Payment</button>
+    </form>
+</div>
+{% endblock %}
