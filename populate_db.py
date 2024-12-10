@@ -634,6 +634,38 @@ with app.app_context():
             product_type="men", 
             image_url="https://res.cloudinary.com/dpar2oaev/image/upload/v1733753241/Jamdani_6_cuhxfs.jpg"
         ),
+
+        Saree(
+            name="Silk Saree 9",
+            description="Traditional Men Kurta 12.", 
+            price=95, 
+            stock=10, 
+            category="silk", 
+            product_type="sarees", 
+            image_url="https://res.cloudinary.com/dpar2oaev/image/upload/v1733790026/Silk_9_zgbigf.jpg"
+
+        ),
+        Saree(
+            name="Partywear 7",
+            description="Traditional Men Kurta 12.", 
+            price=95, 
+            stock=10, 
+            category="partywear", 
+            product_type="sarees", 
+            image_url="https://res.cloudinary.com/dpar2oaev/image/upload/v1733790326/Partywear_7_cykodn.jpg"
+
+        ),
+        Saree(
+            name="Partywear 8",
+            description="Traditional Men Kurta 12.", 
+            price=95, 
+            stock=10, 
+            category="partywear", 
+            product_type="sarees", 
+            image_url="https://res.cloudinary.com/dpar2oaev/image/upload/v1733790326/Partywear_8_aaflvo.jpg"
+
+        )
+        
         
 
     

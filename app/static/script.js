@@ -9,6 +9,9 @@ $(document).ready(function () {
     $(this).remove();
     });
 
+    // Initialize tooltips for icons
+    $('[data-toggle="tooltip"]').tooltip(); // Enable tooltips on hover
+
     // Get the CSRF token from the meta tag
     var csrf_token = $('meta[name=csrf-token]').attr('content');
 
@@ -20,6 +23,27 @@ $(document).ready(function () {
             }
         }
     });
+
+    // For `saree_detail.html` - Handle local increment and decrement
+    $(document).on("click", "#increment-btn, #decrement-btn", function (e) {
+        e.preventDefault();
+    
+        const quantityInput = $("#quantity");
+        const hiddenQuantityInput = $("#selected-quantity"); // Hidden field in the form
+        const max = parseInt(quantityInput.attr("max"));
+        const min = parseInt(quantityInput.attr("min")) || 1;
+        let quantity = parseInt(quantityInput.val()) || 1;
+    
+        if ($(this).attr("id") === "increment-btn" && quantity < max) {
+            quantity += 1;
+        } else if ($(this).attr("id") === "decrement-btn" && quantity > min) {
+            quantity -= 1;
+        }
+    
+        quantityInput.val(quantity);
+        hiddenQuantityInput.val(quantity); // Update hidden input field
+    });
+    
 
     // Handle click on increment button
     $("a.increment-btn").on("click", function () {
@@ -33,18 +57,7 @@ $(document).ready(function () {
         updateQuantity(item_id, 'decrement');
     });
 
-    // Handle quantity change on saree details page
-    $(document).on("click", "#increment-btn, #decrement-btn", function (e) {
-        e.preventDefault();
-        var quantityInput = $("#quantity"); // Input field for quantity
-        var max = parseInt(quantityInput.attr("max")); // Maximum stock
-        var quantity = parseInt(quantityInput.val()); // Current quantity
-        if ($(this).attr("id") === "increment-btn" && quantity < max) {
-            quantityInput.val(quantity + 1); // Increment quantity
-        } else if ($(this).attr("id") === "decrement-btn" && quantity > 1) {
-            quantityInput.val(quantity - 1); // Decrement quantity
-        }
-    });
+    
 
     // Function to send the AJAX request
     function updateQuantity(item_id, action) {
@@ -56,15 +69,18 @@ $(document).ready(function () {
             dataType: "json",
             success: function (response) {
                 if (response.status === 'OK') {
+                    // Format the numbers to two decimal places
+                    const newSubtotal = response.new_subtotal.toFixed(1);
+                    const newTotal = response.new_total.toFixed(1);
+
                     // Update the quantity and total dynamically in the shopping cart page
                     $("#quantity-" + item_id).text(response.new_quantity);
-                    $("#cart-total").text("Total: £" + response.new_total);
-                    $("#subtotal-" + item_id).text("£" + response.new_subtotal);
+                    $("#subtotal-" + item_id).text("£" + newSubtotal);
+                    $("#cart-total").text("Total: £" + newTotal);
 
-                    // Dynamically update the subtotal for the corresponding item in the cart modal
+                     // Update in cart modal if applicable
                     $("#modal-quantity-" + item_id).text(response.new_quantity);
-                    // Update the total in the cart modal
-                    $("#modal-cart-total").text("Total: £" + response.new_total);
+                    $("#modal-cart-total").text("Total: £" + newTotal);
                 } else {
                     alert('Error updating quantity: ' + response.message);
                 }
@@ -104,3 +120,4 @@ window.addEventListener("load", function () {
         },
     });
 });
+

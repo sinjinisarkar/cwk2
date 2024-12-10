@@ -6,6 +6,7 @@ from itsdangerous import URLSafeTimedSerializer
 from datetime import datetime, timedelta
 
 
+
 @app.route('/')
 def index():
     sarees = Saree.query.all()
@@ -41,7 +42,7 @@ def categories(product_type, category_name):
         category_name = "All"
     
     # Construct breadcrumbs
-    breadcrumbs = [{"name": "Home", "url": url_for('index')}]
+    breadcrumbs = []
     if product_type:
         breadcrumbs.append({
             "name": product_type.capitalize(),
@@ -49,6 +50,7 @@ def categories(product_type, category_name):
         })
         if category_name and category_name != "All":
             breadcrumbs.append({"name": category_name.capitalize(), "url": ""})  # No URL for the last crumb
+
 
     return render_template(
         'categories.html',
@@ -101,7 +103,7 @@ def login():
         # Clear the guest cart from the session
         session.pop('cart', None)
 
-        return redirect(url_for('view_cart'))
+        return redirect(url_for('index'))
     else:
         flash("Invalid credentials!", "danger")
         return redirect(url_for('index'))
@@ -134,14 +136,14 @@ def signup():
 
     if User.query.filter_by(email=email).first():
         flash("Email already registered!", "danger")
-        return redirect(url_for('categories'))
+        return redirect(url_for('index'))
 
     new_user = User(email=email)
     new_user.set_password(password)
     db.session.add(new_user)
     db.session.commit()
     flash("Signup successful! Please log in to your account.", "success")
-    return redirect(url_for('categories'))
+    return redirect(url_for('index'))
 
 @app.route('/checkout-options', methods=['GET', 'POST'])
 def checkout_options():
@@ -237,7 +239,7 @@ def checkout():
         flash("Checkout complete!", "success")
         return redirect(url_for('categories'))
 
-    return render_template('payment.html', user=session.get('user_id'), guest_info=session.get('guest_info'))
+    return render_template('address.html', user=session.get('user_id'), guest_info=session.get('guest_info'))
 
 
 
@@ -276,6 +278,7 @@ def add_to_cart(saree_id):
     """Add a saree to the cart."""
     saree = Saree.query.get_or_404(saree_id)  # Fetch the saree from the database
     user_id = session.get('user_id')
+    quantity = int(request.form.get('quantity', 1))  # Get quantity from form, default to 1
 
     if user_id:
         # Logged-in user: use CartItem model
@@ -283,10 +286,10 @@ def add_to_cart(saree_id):
 
         if existing_item:
             # If the item already exists in the user's cart, increment the quantity
-            existing_item.quantity += 1
+            existing_item.quantity += quantity
         else:
             # Otherwise, add the item to the user's cart
-            new_cart_item = CartItem(user_id=user_id, saree_id=saree_id, quantity=1)
+            new_cart_item = CartItem(user_id=user_id, saree_id=saree_id, quantity=quantity)
             db.session.add(new_cart_item)
 
         db.session.commit()  # Commit changes to the database
@@ -296,7 +299,8 @@ def add_to_cart(saree_id):
 
         for item in cart:
             if item['id'] == saree.id:
-                item['quantity'] += 1
+                item['quantity'] += quantity
+                item['subtotal'] = item['price'] * item['quantity']  # Update subtotal
                 break
         else:
             cart.append({
@@ -304,16 +308,15 @@ def add_to_cart(saree_id):
                 'name': saree.name,
                 'price': saree.price,
                 'image': saree.image_url,
-                'quantity': 1,
-                'subtotal': saree.price,  # Initial subtotal
+                'quantity': quantity,
+                'subtotal': saree.price * quantity
             })
 
         session['cart'] = cart
         session.modified = True  # Mark session as updated
 
-    flash(f"{saree.name} added to cart!", "success")
-    return redirect(url_for('categories'))
-
+    flash(f"{quantity} x {saree.name} added to cart!", "success")
+    return redirect(request.referrer or url_for('categories'))  # Redirect back to the previous page
 
 @app.route('/remove-from-cart/<int:saree_id>')
 def remove_from_cart(saree_id):
@@ -608,12 +611,16 @@ def payment():
     )
 
 
-
-
-
 @app.route('/saree/<int:saree_id>', methods=['GET', 'POST'])
 def saree_detail(saree_id):
     saree = Saree.query.get_or_404(saree_id)
+
+    # Construct breadcrumbs
+    breadcrumbs = [
+        {"name": saree.product_type.capitalize(), "url": url_for('categories', product_type=saree.product_type)},
+        {"name": saree.category.capitalize(), "url": url_for('categories', product_type=saree.product_type, category_name=saree.category)},
+        {"name": saree.name, "url": ""}
+    ]
 
     if request.method == 'POST':
         quantity = int(request.form.get('quantity', 1))
@@ -647,7 +654,7 @@ def saree_detail(saree_id):
         flash(f"{quantity} x {saree.name} added to your cart.", "success")
         return redirect(url_for('saree_detail', saree_id=saree.id))
 
-    return render_template('saree_detail.html', saree=saree)
+    return render_template('saree_detail.html', saree=saree, breadcrumbs=breadcrumbs)
 
 
 
@@ -778,3 +785,27 @@ def search():
     ).all()
     
     return render_template('search_results.html', query=query, results=results)
+
+
+
+@app.route('/address', methods=['GET', 'POST'])
+def address():
+    if 'user_id' not in session:
+        flash("Please log in to access this page.", "danger")
+        return redirect(url_for('login'))
+
+    if request.method == 'POST':
+        # Debug: Print form data
+        print(request.form)
+
+        user = User.query.get(session['user_id'])
+
+        # Save the shipping address
+        user.address = request.form.get('address')
+        db.session.commit()
+
+        flash("Address saved successfully! Redirecting to payment...", "success")
+        return redirect(url_for('payment'))
+
+    return render_template('address.html')
+

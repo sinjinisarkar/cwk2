@@ -6,17 +6,17 @@
         <!-- Sidebar -->
         <div class="col-md-3">
             <div class="list-group shadow-sm">
-                <h5 class="mb-3">My Account</h5>
                 <a href="#" class="list-group-item list-group-item-action active">My Orders</a>
                 <a href="{{ url_for('wishlist') }}" class="list-group-item list-group-item-action">My Wishlist</a>
-                <a href="#" class="list-group-item list-group-item-action">Account Information</a>
                 <a href="{{ url_for('logout') }}" class="list-group-item list-group-item-action text-danger">Logout</a>
+                
+
             </div>
         </div>
 
         <!-- Main Content -->
         <div class="col-md-9">
-            <h4>My Orders</h4>
+            <h2 class="font-weight-bold">My Orders</h2>
             {% if orders %}
                 <div class="order-summary">
                     {% for order in orders %}

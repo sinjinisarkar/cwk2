@@ -20,7 +20,7 @@
     <!-- Top Bar -->
     <header class="bg-danger text-white py-2">
         <div class="scrolling-container">
-            <p class="scrolling-text">Shopping is now fun with NK. Welcome to the world of sarees!</p>
+            <p class="scrolling-text">Shopping is now fun with Nakshi Kantha. Welcome to the world of sarees!</p>
         </div>
     </header>
 
@@ -62,7 +62,7 @@
             
                     <!-- Logo -->
                     <div class="col-md-4 text-center">
-                        <a href="/" aria-label="Saree Store Logo">
+                        <a href="/" data-toggle="tooltip" aria-label="Saree Store Logo" title="Go to home page">
                             <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Saree Store Logo" class="img-fluid logo">
                         </a>
                     </div>
@@ -70,7 +70,7 @@
                     <!-- User Account Section -->
                     <div class="col-md-4 d-flex justify-content-end">
                         <!-- Profile Dropdown -->
-                        <div class="dropdown">
+                        <div class="dropdown" data-toggle="tooltip" title="View Profile">
                             <a href="#" class="mx-2" aria-label="View Profile" data-toggle="dropdown">
                                 <i class="fas fa-user-circle fa-lg"></i> <!-- Profile Icon -->
                             </a>
@@ -88,14 +88,17 @@
                         </div>
                     
                         <!-- Wishlist Button -->
-                        <a href="/wishlist" class="mx-2" aria-label="View Wishlist">
+                        <a href="/wishlist" data-toggle="tooltip" class="mx-2" aria-label="View Wishlist" title="View Wishlist">
                             <i class="fas fa-heart fa-lg"></i>
                         </a>
                         
                         <!-- Cart Button -->
-                        <a href="#" class="mx-2" aria-label="View Cart" data-toggle="modal" data-target="#miniCartModal">
-                            <i class="fas fa-shopping-cart fa-lg"></i>
-                        </a>
+                        <div data-toggle="tooltip" title="View Cart">
+                            <a href="#" class="mx-2" aria-label="View Cart" data-toggle="modal" data-target="#miniCartModal">
+                                <i class="fas fa-shopping-cart fa-lg"></i>
+                            </a>
+                        </div>
+                        
                     </div>
                     
 
@@ -151,9 +154,6 @@
                             <a class="dropdown-item" href="{{ url_for('categories', product_type='men', category_name='traditionals') }}">Traditionals</a>
                             <a class="dropdown-item" href="{{ url_for('categories', product_type='men', category_name='jamdanis') }}">Jamdanis</a>
                         </div>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-dark font-weight-bold" href="/work-sarees">Kids</a>
                     </li>
                 </ul>
             </div>
@@ -333,7 +333,7 @@
                 </div>
             </div>
             <div class="text-center mt-3">
-                <small class="text-muted">&copy; 2024 Nakshi Kantha. All Rights Reserved.</small>
+                <p class="text-muted">&copy; 2024 Nakshi Kantha. All Rights Reserved.</p>
             </div>
         </div>
     </footer>

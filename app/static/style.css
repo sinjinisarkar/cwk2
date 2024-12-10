@@ -66,6 +66,18 @@ h1 {
     color: #ff4444;
 }
 
+/* Change the text color of active and inactive tabs */
+.nav-tabs .nav-link {
+    color: #d32f2f; /* High contrast red */
+}
+
+/* Optional: Highlight the active tab with a darker red */
+.nav-tabs .nav-link.active {
+    color: white; /* Change the text color of the active tab */
+    background-color: #d32f2f; /* High contrast red */
+    border-color: #d32f2f; /* High contrast red */
+}
+
 
 
 .carousel-caption {
@@ -145,7 +157,7 @@ h1 {
   }
   
 
-/* New-arrivals */
+/* New-arrivals  */
 .new-arrivals {
     background-color: #f9f9f9;
 }
@@ -155,9 +167,11 @@ h1 {
     font-weight: bold;
 }
 
+/* Card Layout for products */
 .card img {
-    max-height: 400px;
-    object-fit: cover;
+    width: 100%;
+    max-height: 300px;
+    object-fit: cover; /* to display proportionally*/
 }
 
 .card-title {
@@ -175,6 +189,65 @@ h1 {
     box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); /* Optional shadow for a polished look */
 }
 
+
+.list-group-item.active {
+    background-color: #d32f2f !important; /* Change to your desired background color */
+    color: #ffffff !important;           /* Change to your desired text color */
+    border-color: #d32f2f !important;    /* Optional: Change border color */
+}
+
+/* Breadcrumb Styling */
+.breadcrumb {
+    background-color: transparent; /* Ensures no background color */
+    margin: 0; /* Optional: Adjust margin */
+    padding: 0; /* Optional: Adjust padding */
+    border: none; /* Removes borders */
+}
+
+.breadcrumb-item a {
+    color: #d32f2f; /* High contrast red */
+    text-decoration: none; /* Removes underline */
+    font-weight: bold; /* Makes the text easier to read */
+}
+
+.breadcrumb-item a:hover {
+    color: #b71c1c; /* Darker red on hover */
+    text-decoration: underline; /* Adds underline on hover for emphasis */
+}
+
+.breadcrumb-item.active {
+    color: #212121; /* Dark gray for active breadcrumb item */
+    font-weight: bold; /* Makes the active item bold */
+}
+
+/* Customize dropdown text size and spacing */
+.dropdown-menu {
+    font-size: 14px; /* Adjust font size for all dropdown items */
+    line-height: 1.5; /* Improve readability with better line spacing */
+    padding: 10px; /* Add some padding for a cleaner look */
+}
+
+/* Style the 'Welcome' message */
+.dropdown-menu .dropdown-item-text {
+    font-size: 13px; /* Slightly smaller font size for the welcome text */
+    font-weight: bold; /* Make it bold for emphasis */
+    color: #555; /* Use a neutral color for the text */
+    margin-bottom: 8px; /* Add spacing below the welcome message */
+}
+
+/* Profile and Logout links */
+.dropdown-menu .dropdown-item {
+    font-size: 14px; /* Slightly larger than the welcome text */
+    color: #333; /* Set a clean dark color for links */
+    padding: 8px 15px; /* Add padding for better clickability */
+    text-align: left; /* Align text to the left */
+}
+
+/* Highlight effect on hover for links */
+.dropdown-menu .dropdown-item:hover {
+    background-color: #f5f5f5; /* Subtle hover background */
+    color: #c7182f; /* Highlight with a brand color */
+}
 
 
 

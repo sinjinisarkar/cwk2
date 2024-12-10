@@ -2,7 +2,9 @@
 
 {% block content %}
 <div class="container mt-5">
-    <h2>Payment</h2>
+    <div class="text-center mb-4">
+        <h2 class="font-weight-bold">Payment</h2>
+    </div>
     <form method="POST" action="/payment">
         <div class="form-group">
             <label for="payment_method">Payment Method:</label>
@@ -15,7 +17,7 @@
             <label for="card_number">Card Number:</label>
             <input type="text" class="form-control" id="card_number" name="card_number" required>
         </div>
-        <button type="submit" class="btn btn-success">Submit Payment</button>
+        <button type="submit" class="btn btn-danger mb-5">Submit Payment</button>
     </form>
 </div>
 {% endblock %}
